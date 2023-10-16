@@ -1,0 +1,8 @@
+Calculation of the BIC: 
+103.34705926231027
+The maximum error is : 
+0.7135222191426374
+The maximum k is : 
+13
+Computation of AIC
+19.040326501088817
