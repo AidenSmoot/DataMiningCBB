@@ -52,14 +52,14 @@ for i in range(numFolds):
     outputTrain = output.drop(output.index[i*testSize:(i+1)*testSize+increment])
     rgr.fit(inputsTrain,np.ravel(outputTrain))
     preds = rgr.predict(inputsTest)
+    res = np.zeros(outputTest.shape[0])
+    tot = np.zeros(outputTest.shape[0])
+    mean = np.mean(outputTest, axis = 0)
     for j in range(inputsTest.shape[0]):
-        res = np.zeros(outputTest.shape[0])
-        tot = np.zeros(outputTest.shape[0])
-        mean = np.mean(outputTest, axis = 0)
-        res[j] = (outputTest.iloc[j]-preds[j])**2
-        tot[j] = (outputTest.iloc[j]-mean)**2
-    rmses[i] = np.sqrt((np.sum(res)/outputTest.shape[0])**(1/2))
+        res[j] = (outputTest.iloc[j]-preds[j])**2 # Residual sum of squares: (output - predicted)^2
+        tot[j] = (outputTest.iloc[j]-mean)**2 # Total sum of squares: (output - mean)^2
+    rmses[i] = np.sqrt((np.sum(res)/outputTest.shape[0])) # Root mean squared error: sqrt(sum(residuals)/variance(output))
     print("RMSE = ", rmses[i])
     increment = 0
-print("R^2 = ", 1-(np.max(rmses**2)/np.var(output)))
+print("R^2 = ", 1-(np.max(rmses**2)/np.var(output))) # R^2: 1 - (residual sum of squares / total sum of squares)
 
