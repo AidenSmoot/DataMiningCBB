@@ -1,0 +1,196 @@
+With K value : 
+1
+ ERROR : 
+0.4403497939620502
+With K value : 
+2
+ ERROR : 
+0.5948935686140909
+With K value : 
+3
+ ERROR : 
+0.6437115584473265
+With K value : 
+4
+ ERROR : 
+0.6607965280615842
+With K value : 
+5
+ ERROR : 
+0.6792780621309965
+With K value : 
+6
+ ERROR : 
+0.6855702216968003
+With K value : 
+7
+ ERROR : 
+0.6933408193537077
+With K value : 
+8
+ ERROR : 
+0.6971788163456198
+With K value : 
+9
+ ERROR : 
+0.7011370798177684
+With K value : 
+10
+ ERROR : 
+0.7062979976254375
+With K value : 
+11
+ ERROR : 
+0.7113834220458685
+With K value : 
+12
+ ERROR : 
+0.7123502719713846
+With K value : 
+13
+ ERROR : 
+0.7135222191426374
+With K value : 
+14
+ ERROR : 
+0.7122754844475436
+With K value : 
+15
+ ERROR : 
+0.7116382918155038
+With K value : 
+16
+ ERROR : 
+0.7117788696366858
+With K value : 
+17
+ ERROR : 
+0.7112542137712257
+With K value : 
+18
+ ERROR : 
+0.7125054266407749
+With K value : 
+19
+ ERROR : 
+0.7108373352327162
+With K value : 
+20
+ ERROR : 
+0.7101234098105584
+With K value : 
+21
+ ERROR : 
+0.7096329642171582
+With K value : 
+22
+ ERROR : 
+0.7081777376335747
+With K value : 
+23
+ ERROR : 
+0.7064988819784173
+With K value : 
+24
+ ERROR : 
+0.7049284007569108
+With K value : 
+25
+ ERROR : 
+0.7050321113580977
+With K value : 
+26
+ ERROR : 
+0.7042057387419037
+With K value : 
+27
+ ERROR : 
+0.7047671986853197
+With K value : 
+28
+ ERROR : 
+0.7042972049781333
+With K value : 
+29
+ ERROR : 
+0.7043891013152419
+With K value : 
+30
+ ERROR : 
+0.7036441238470343
+With K value : 
+31
+ ERROR : 
+0.7032290913366812
+With K value : 
+32
+ ERROR : 
+0.7037551460429783
+With K value : 
+33
+ ERROR : 
+0.7030114656299364
+With K value : 
+34
+ ERROR : 
+0.7028733367770643
+With K value : 
+35
+ ERROR : 
+0.7030839257914776
+With K value : 
+36
+ ERROR : 
+0.7032330828268569
+With K value : 
+37
+ ERROR : 
+0.7032981256862443
+With K value : 
+38
+ ERROR : 
+0.7030854770343891
+With K value : 
+39
+ ERROR : 
+0.7025125548760274
+With K value : 
+40
+ ERROR : 
+0.7020931103949194
+With K value : 
+41
+ ERROR : 
+0.7003849651885474
+With K value : 
+42
+ ERROR : 
+0.7000963906198184
+With K value : 
+43
+ ERROR : 
+0.7004320252389983
+With K value : 
+44
+ ERROR : 
+0.7000428923948288
+With K value : 
+45
+ ERROR : 
+0.6999300289015644
+With K value : 
+46
+ ERROR : 
+0.6988680631759084
+With K value : 
+47
+ ERROR : 
+0.6982538314915844
+With K value : 
+48
+ ERROR : 
+0.6979713094726745
+With K value : 
+49
+ ERROR : 
+0.6972929253761169
