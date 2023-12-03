@@ -9,6 +9,14 @@ cbb = pd.read_csv('finalCBB.csv')
 cbb = cbb.drop(cbb.columns[0],axis=1)
 thetas = []
 
+#compute the mean and standard deviation of each column
+means = [] 
+stdevs = []
+
+for column in cbb:
+    means.append(np.mean(cbb[column]))
+    stdevs.append(np.std(cbb[column]))
+
 # SGD Regression with L2 penalty (Ridge Regression) from scratch
 def sgd_regression_l2(X, y, learning_rate=0.01, n_epochs=100, alpha=0.1, max_iter=1000):
     m, n = X.shape
@@ -66,7 +74,7 @@ def make_prediction(thetas, x, year):
     return y[0]
 
 #enter stats here
-x = np.array([0.7063,-0.0979183,2.31598,1.75049,0.7063,-0.0979183,2.31598,1.75049])
+newData = np.array([0.881005,-0.686403,-1.56669,-0.189683,2.70316,0.149391,-0.404236,-0.688248])
 # y = make_prediction(theta, x)
 # print(y)
 
@@ -76,13 +84,31 @@ weights = np.array([theta.T[0] for theta in thetas][:len(thetas)-1]).T
 
 # print(thetas_t[0])
 
-print(thetas[2])
+def standardize(newData):
+    newDataStd = []
+    for i in range(len(newData)):
+        newDataStd.append((newData[i] - means[i]) / stdevs[i])
+    return np.array(newDataStd)
 
-for i in range(0, len(attributes)):
-    plt.plot(years, weights[i], label = attributes[i])
-plt.legend()
-plt.xlabel("Year")
-plt.ylabel("Weight")
-plt.show()
 
-print(make_prediction(thetas, x, 2014))
+def predict_and_plot(input, years, thetas):
+    standardized_input = standardize(input)
+    predictions = []
+    for i in range(len(years)):
+        print("year :", years[i])
+        predictions.append(make_prediction(thetas, input, years[i]))
+    plt.plot(years, predictions)
+    plt.show()
+    return predictions
+
+
+# for i in range(0, len(attributes)):
+#     plt.plot(years, weights[i], label = attributes[i])
+# plt.legend()
+# plt.xlabel("Year")
+# plt.ylabel("Weight")
+# plt.show()
+
+# print(thetas[0])
+
+print(predict_and_plot(newData, years, thetas))
