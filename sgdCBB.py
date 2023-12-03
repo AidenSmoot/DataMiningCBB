@@ -7,12 +7,31 @@ import scipy.stats
 
 cbb = pd.read_csv('Basketball Data Mining\\finalCBB.csv')
 cbb = cbb.drop(cbb.columns[0:5],axis=1)
+year = cbb.drop(cbb.columns[0:-2],axis=1)
 cbb = cbb.drop(['YEAR'],axis=1)
 inputs = cbb.drop(['WR'], axis=1)
 rowCount = inputs.shape[0]
 output = cbb.drop(cbb.columns[0:-1], axis=1)
 rgr = SGDRegressor(loss='squared_error', penalty='l2', max_iter=10000)
 
+'''
+setY = set(year['YEAR'])
+i = 1
+for y in setY:
+    yearTwo = year[year['YEAR'] == y]
+    temp = yearTwo['WR'].sort_values(ascending=True)
+    plt.subplot(2,5,i)
+    plt.plot(temp.values,'o')
+    i += 1
+plt.show()
+
+
+temp = output['WR'].sort_values(ascending=True)
+plt.plot(temp.values,'o')
+plt.ylabel("Win Rates")
+plt.xlabel("Observations (Sorted by Win Rate)")
+plt.show()
+'''
 '''
 Use train test split
 Run fit with training data
