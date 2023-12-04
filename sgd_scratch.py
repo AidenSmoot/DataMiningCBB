@@ -82,6 +82,9 @@ newData = np.array([0.881005,-0.686403,-1.56669,-0.189683,2.70316,0.149391,-0.40
 years = [2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023]
 weights = np.array([theta.T[0] for theta in thetas][:len(thetas)-1]).T
 
+#np.savetxt("SGD_weights", weights.T, delimiter=',')
+
+
 # print(thetas_t[0])
 
 def standardize(newData):
@@ -112,3 +115,4 @@ def predict_and_plot(input, years, thetas):
 # print(thetas[0])
 
 print(predict_and_plot(newData, years, thetas))
+
