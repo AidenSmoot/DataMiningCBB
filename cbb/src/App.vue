@@ -1,8 +1,8 @@
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed } from 'vue';
 import HWRPage from './components/HWRPage.vue';
-import WinRate from './components/WinRatePredictorPage.vue'
-import Home from './components/HomePage.vue'
+import WinRate from './components/WinRatePredictorPage.vue';
+import Home from './components/HomePage.vue';
 
 // const routes = {
 //   '/': Home,

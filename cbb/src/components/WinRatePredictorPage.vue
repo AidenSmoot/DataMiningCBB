@@ -63,12 +63,14 @@
         <v-row id="algorithmsWR">
           <v-col class="algoContentWR">
             <h1 class="headersWR">Logistic Regression</h1>
-            <h3>Predicted Win Rate:</h3>
+            <h3>Overall Predicted Win Rate:</h3>
+            <zingchart :data="chartDataLog"></zingchart>
           </v-col>
         <v-divider vertical/>
           <v-col class="algoContentWR">
             <h1 class="headersWR">Stochastic Gradient Descent</h1>
-            <h3>Predicted Win Rate:</h3>
+            <h3>Overall Predicted Win Rate:</h3>
+            <zingchart :data="chartDataSGD"></zingchart>
           </v-col>
         </v-row>
       </v-card>
@@ -77,7 +79,11 @@
 </template>
 
 <script>
+import ZingChart from 'zingchart-vue';
   export default {
+    components: {
+      'zingchart': ZingChart,
+    },
     data: () => ({
       inputStats:
       [
@@ -90,6 +96,20 @@
       "FTR",
       "FTRD"
       ],
+      chartDataLog: {
+          data: 'chartDataLog',
+          type: 'line',
+          series:[{
+            values: [0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0]
+          }]
+        },
+        chartDataSGD: {
+          data: 'chartDataSGD',
+          type: 'line',
+          series:[{
+            values: [0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0]
+          }]
+        },
       efgo: 0.0,
       efgd: 0.0,
       tor: 0.0,
@@ -100,6 +120,7 @@
       ftrd: 0.0,
       predWRLog: 0.0,
       predWRSGD: 0.0,
+      overallWR: 0.0,
       overallWeights: 
       [
         .06996,
@@ -188,14 +209,43 @@
       "FTR",
       "FTRD"
       ],
+    years:
+    [
+      "2013",
+      "2014",
+      "2015",
+      "2016",
+      "2017",
+      "2018",
+      "2019",
+      "2020",
+      "2021",
+      "2022",
+      "2023"
+    ]
     }),
+  mounted() {
+    this.logReg()
+  },
   methods: {
       getStatName(value) {
         return this.inputStats[value]
       },
-      logReg() {
-        console.log(this.efgo, this.efgd, this.tor, this.tord, this.orb, this.drb, this.ftr, this.ftrd)
-        let winrates = [0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0]
+      async logReg() {
+        let temp = {
+          data: 'chartDataLog',
+          type: 'line',
+          'scale-x': {
+            'values': this.years
+          },
+          series:[{
+            values: [0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0]
+          }]
+        }
+        this.chartDataLog = temp
+        this.chartDataSGD = temp
+        let winratesLog = [0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0]
+        let winratesSGD = [0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0]
         for (let i = 0; i < 11; i++) {
           let normal = [((this.efgo-this.annualMeans[i][0])/this.annualSTDV[i][0]),
                     ((this.efgd-this.annualMeans[i][1])/this.annualSTDV[i][1]),
@@ -206,19 +256,50 @@
                     ((this.ftr-this.annualMeans[i][6])/this.annualSTDV[i][6]),
                     ((this.ftrd-this.annualMeans[i][7])/this.annualSTDV[i][7])
           ]
-          console.log(normal)
-          winrates[i] = this.annualWeights[i][0]
+          winratesLog[i] = this.annualWeights[i][0] //Bias term
+          winratesSGD[i] = this.annualWeights[i][0] //Bias term
           for (let j = 1; j < 9; j++) {
-            winrates[i] += (this.annualWeights[i][j] * normal[j-1])
+            winratesLog[i] += (this.annualWeights[i][j] * normal[j-1]) //TODO update with sigmoid
+            winratesSGD[i] += (this.annualWeights[i][j] * normal[j-1])
           }
-          if (winrates[i] > 1.0) {
-            winrates[i] = 1.0
+          if (winratesLog[i] > 1.0) {
+            winratesLog[i] = 1.0
           }
-          else if (winrates[i] < 0.0) {
-            winrates[i] = 0.0
+          else if (winratesLog[i] < 0.0) {
+            winratesLog[i] = 0.0
+          }
+          if (winratesSGD[i] > 1.0) {
+            winratesSGD[i] = 1.0
+          }
+          else if (winratesSGD[i] < 0.0) {
+            winratesSGD[i] = 0.0
           }
         }
-        console.log(winrates)
+        this.chartDataLog = {
+          data: 'log',
+          type: 'line',
+          'scale-x': {
+            'values': this.years
+          },
+          series: [
+            {
+              values: winratesLog,
+            }
+          ]
+        }
+        this.chartDataSGD = {
+          data: 'log',
+          type: 'line',
+          'scale-x': {
+            'values': this.years
+          },
+          series: [
+            {
+              values: winratesSGD,
+            }
+          ]
+        }
+        return await this.overall;
       }
     }
   }
@@ -245,6 +326,11 @@
 }
 #algorithmsWR {
   margin: 0px;
+}
+#log {
+  display:block;
+  width: 500px;
+  height: 500px;
 }
 .headersWR {
   text-align: center;
