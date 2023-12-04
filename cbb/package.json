@@ -8,9 +8,16 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@canvasjs/charts": "^3.7.29",
+    "@canvasjs/vue-charts": "^1.0.1",
+    "apexcharts": "^3.44.1",
     "axios": "^1.6.2",
+    "chartjs": "^0.3.24",
     "vue": "^3.3.4",
-    "vuetify": "^3.4.3"
+    "vue-chartjs": "^5.2.0",
+    "vuetify": "^3.4.3",
+    "zingchart": "^2.9.12",
+    "zingchart-vue": "^3.0.0"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^4.4.0",
