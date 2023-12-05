@@ -2,8 +2,11 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import datetime
+import time
 from numpy import log,dot,exp,shape
 from sklearn.metrics import r2_score 
+from statsmodels.stats.outliers_influence import variance_inflation_factor
+from statsmodels.tools import add_constant
 
 #read in the preprocessed data and drop unnecessary columns
 cbb = pd.read_csv('Basketball Data Mining/finalCBB.csv')
@@ -16,6 +19,7 @@ output = cbb.drop(cbb.columns[0:-1], axis=1)
 #read in a new row of data
 newData = [52.6, 47.7, 14, 22.8, 30, 29.7, 28.4, 23.9]
 predictionsByYear = []
+weightsByYear = []
 
 #read in the original, non-normalized data
 cbbOriginal = pd.read_csv('Basketball Data Mining/cbb.csv')
@@ -52,7 +56,7 @@ class LogisticRegression:
     #perform gradient descent to obtain the optimal parameters
     def fit(self,X,y,alpha=0.001,iter=1000):
         weights,X = self.initialize(X)
-        #compute the cost function using log loss
+        #compute the cost function using log likelihood
         def cost(theta):
             z = dot(X,theta)
             cost0 = y.T.dot(log(self.sigmoid(z)))
@@ -107,6 +111,56 @@ for i in range(numFolds):
         bestWeights = np.ravel(obj1.weights)
     increment = 0
 
+#keep track of the start and end times to run the algorithm
+start_time = time.time()
+preds = obj1.predict(inputs)
+end_time = time.time()
+
+#compute the run time of the algorithm 
+runTime = end_time - start_time
+
+#store the predicted win rates
+predicted = []
+for i in range(len(preds)):
+    predicted.append(preds[i][0])
+
+#store the actual win rates
+actual = []
+actualValues = np.ravel(output)
+for i in range(len(actualValues)):
+    actual.append(actualValues[i])
+
+
+n = len(inputs.axes[0])
+p = len(inputs.axes[1])
+#Compute the R^2 value
+R2 = 1-(np.min(rmses**2)/np.var(output)) # R^2: 1 - (residual sum of squares / total sum of squares)
+#compute the adjusted R^2 value
+adj_R2 = 1- (1 - R2) * ((n-1)/(n-p-1))
+
+# Calculate the likelihood for each observation
+likelihoods = []
+for i in range(len(actual)):
+    likelihoods.append(actual[i] * np.log(predicted[i]) + (1 - actual[i]) * np.log(1 - predicted[i]))
+
+# The negative log-likelihood is the negation of the sum of the log-likelihoods
+nll = -np.sum(likelihoods)
+
+#calculate the AIC
+aic = 2 * p - 2 * nll
+
+#calculate the BIC
+bic = np.log(n) * p - 2 * nll
+
+# Add a constant to the features (required for statsmodels)
+features_with_constant = add_constant(inputs)
+
+#Create a DataFrame to store VIF values
+vif_data = pd.DataFrame()
+vif_data["Variable"] = features_with_constant.columns
+vif_data["VIF"] = [variance_inflation_factor(features_with_constant.values, i) for i in range(features_with_constant.shape[1])]
+
+
 #store the weights in a list
 reformattedWeights = []
 for i in range(0, len(bestWeights)):
@@ -118,8 +172,6 @@ for i in range(0, len(inputs.columns)):
     attributes.append(inputs.columns[i])
 
 columnWeights = pd.DataFrame({"Attribute": attributes, "Weights": reformattedWeights})
-#print(columnWeights.sort_values(by=['Weights'], ascending = False))
-
 
 overallPrediction = obj1.predict(newDataStd)
 
@@ -193,6 +245,7 @@ for i in range(0, len(attributes)):
     weightsOverTime[i].append(reformattedWeights[i])
 
 predictionsByYear.append(obj1.predict(newDataStd))
+weightsByYear.append(reformattedWeights)
 
 
 
@@ -259,6 +312,7 @@ for i in range(0, len(attributes)):
     weightsOverTime[i].append(reformattedWeights[i])
 
 predictionsByYear.append(obj1.predict(newDataStd))
+weightsByYear.append(reformattedWeights)
 
 
 
@@ -326,6 +380,7 @@ for i in range(0, len(attributes)):
     weightsOverTime[i].append(reformattedWeights[i])
 
 predictionsByYear.append(obj1.predict(newDataStd))
+weightsByYear.append(reformattedWeights)
 
 
 cbb = pd.read_csv('Basketball Data Mining/finalCBB16.csv')
@@ -392,6 +447,7 @@ for i in range(0, len(attributes)):
     weightsOverTime[i].append(reformattedWeights[i])
 
 predictionsByYear.append(obj1.predict(newDataStd))
+weightsByYear.append(reformattedWeights)
 
 
 cbb = pd.read_csv('Basketball Data Mining/finalCBB17.csv')
@@ -458,6 +514,7 @@ for i in range(0, len(attributes)):
     weightsOverTime[i].append(reformattedWeights[i])
 
 predictionsByYear.append(obj1.predict(newDataStd))
+weightsByYear.append(reformattedWeights)
 
 
 
@@ -526,6 +583,7 @@ for i in range(0, len(attributes)):
 
 
 predictionsByYear.append(obj1.predict(newDataStd))
+weightsByYear.append(reformattedWeights)
 
 
 
@@ -594,6 +652,7 @@ for i in range(0, len(attributes)):
     weightsOverTime[i].append(reformattedWeights[i])
 
 predictionsByYear.append(obj1.predict(newDataStd))
+weightsByYear.append(reformattedWeights)
 
 
 
@@ -662,7 +721,7 @@ for i in range(0, len(attributes)):
 
 
 predictionsByYear.append(obj1.predict(newDataStd))
-
+weightsByYear.append(reformattedWeights)
 
 
 cbb = pd.read_csv('Basketball Data Mining/finalCBB21.csv')
@@ -730,6 +789,7 @@ for i in range(0, len(attributes)):
 
 
 predictionsByYear.append(obj1.predict(newDataStd))
+weightsByYear.append(reformattedWeights)
 
 
 cbb = pd.read_csv('Basketball Data Mining/finalCBB22.csv')
@@ -797,7 +857,7 @@ for i in range(0, len(attributes)):
 
 
 predictionsByYear.append(obj1.predict(newDataStd))
-
+weightsByYear.append(reformattedWeights)
 
 cbb = pd.read_csv('Basketball Data Mining/finalCBB23.csv')
 cbb = cbb.drop(cbb.columns[0],axis=1)
@@ -859,6 +919,7 @@ for i in range(0, len(inputs.columns)):
     attributes.append(inputs.columns[i])
 
 predictionsByYear.append(obj1.predict(newDataStd))
+weightsByYear.append(reformattedWeights)
 
 for i in range(0, len(attributes)):
     weightsOverTime[i].append(reformattedWeights[i])
@@ -877,5 +938,13 @@ plt.show()
 plt.plot(years, predictionsByYear)
 plt.show()
 
-
+print(columnWeights)
+print("CBB Original: ")
+print(cbbOriginal[1:10])
+print('Means:')
+print(means)
+print('Standard Deviations: ')
+print(stdevs)
+print('weights: ')
+print(weightsByYear)
 
