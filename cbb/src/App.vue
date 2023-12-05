@@ -3,7 +3,8 @@ import { ref, computed } from 'vue';
 import HWRPage from './components/HWRPage.vue';
 import WinRate from './components/WinRatePredictorPage.vue';
 import Home from './components/HomePage.vue';
-
+import Evaluation from './components/Eval.vue'
+import Weights from './components/Weights.vue';
 // const routes = {
 //   '/': Home,
 //   '/historical-win-rate': HWRPage,
@@ -26,9 +27,11 @@ import Home from './components/HomePage.vue';
     <v-app>
       <v-card>
         <v-tabs align-tabs="center">
-          <v-tab :value="1" @click=changeComponent(0)>Home</v-tab>
+          <v-tab :value="1" @click=changeComponent(0)>Feature Comparison</v-tab>
           <v-tab :value="2" @click=changeComponent(1)>Win Rate Predictor</v-tab>
           <v-tab :value="3" @click=changeComponent(2)>Historical Win Rate</v-tab>
+          <v-tab :value="4" @click=changeComponent(3)>Model Evaluation</v-tab>
+          <v-tab :value="5" @click=changeComponent(4)>Weight Interpretations</v-tab>
         </v-tabs>
       </v-card>
       <main id = 'body'>
@@ -42,7 +45,7 @@ import Home from './components/HomePage.vue';
     data: () => ({
       currentIDX: 0,
       componentList: [
-        Home, WinRate, HWRPage
+        Home, WinRate, HWRPage, Evaluation, Weights
       ],
       activeComponent: Home
     }),
